@@ -79,26 +79,45 @@ class BinarySearchTree<Element:Comparable>:TreeObjectDelegate{
         
         var queue : Queue<TreeNode<Element>> = Queue.init()
         queue.enqueue(root!)
-        var isComplete = false
+        var isleaver = false
         while !queue.isEmpty {
             let node = queue.dequene()
             guard (node != nil) else {
                 return false
             }
             
-            
-            
-            
-            if node!.left != nil {
-                queue.enqueue(node!.left!)
-            }
-            
-            if node!.right != nil {
-                queue.enqueue(node!.right!)
+            if isleaver {
+                if node!.left != nil || node!.right != nil {
+                    return false
+                }
+            } else {
+                if node!.left != nil && node!.right != nil {
+                    queue.enqueue(node!.left!)
+                    queue.enqueue(node!.right!)
+                } else if node!.left == nil && node!.right != nil {
+                    return false
+                } else { //叶子节点
+                    if node!.left != nil {
+                        queue.enqueue(node!.left!)
+                    }
+                    isleaver = true
+                }
             }
         }
-        return isComplete
+        return true
     }
+    
+    
+    /** https://leetcode-cn.com/problems/invert-binary-tree/submissions/
+     * leetcode 226. 翻转二叉树
+     */
+    public func invertTree(){
+        //递归
+        //self.invertTreeRecursion(root)
+        self.invertTreeCicle(root)
+    }
+    
+    
 }
 
 extension BinarySearchTree{
@@ -170,11 +189,11 @@ extension BinarySearchTree{
             return
         }
         
-        self.preorderTraversal(node!.left)
+        self.inorderTraversal(node!.left)
         if callBackClosure != nil {
             callBackClosure!(node!.element)
         }
-        self.preorderTraversal(node!.right)
+        self.inorderTraversal(node!.right)
     }
     
     private func postorderTraversal(_ node: TreeNode<Element>?){
@@ -188,7 +207,6 @@ extension BinarySearchTree{
             callBackClosure!(node!.element)
         }
     }
-    
 }
 
 extension BinarySearchTree {
@@ -244,5 +262,46 @@ extension BinarySearchTree {
             }
         }
         return height
+    }
+    
+    private func invertTreeRecursion(_ node:TreeNode<Element>?){
+        guard node != nil else {
+            return
+        }
+        
+        let tmp = node!.left
+        node!.left = node!.right
+        node!.right = tmp
+        
+        self.invertTreeRecursion(node!.left)
+        self.invertTreeRecursion(node!.right)
+    }
+    
+    private func invertTreeCicle(_ root:TreeNode<Element>?){
+        guard root != nil else {
+            return
+        }
+        
+        var queue : Queue<TreeNode<Element>> = Queue.init()
+        queue.enqueue(root!)
+        while !queue.isEmpty {
+            
+            let node = queue.dequene()
+            guard node != nil else {
+                break
+            }
+            
+            let tmp = node!.left
+            node!.left = node!.right
+            node!.right = tmp
+            
+            if node!.left != nil {
+                queue.enqueue(node!.left!)
+            }
+            if node!.right != nil {
+                queue.enqueue(node!.right!)
+            }
+            
+        }
     }
 }
