@@ -125,9 +125,42 @@ extension BinarySearchTree{
         guard (root != nil) else {
             return
         }
+        /* 迭代
         callBackClosure = closure
         self .preorderTraversal(root)
-        callBackClosure = nil
+        callBackClosure = nil*/
+        
+        var queue : Queue<TreeNode<Element>> = Queue.init()
+        var heap :[TreeNode<Element>] = Array.init()
+        queue.enqueue(root!)
+        heap.append(root!)
+        
+        guard (root!.left != nil && root!.right != nil) else {
+            closure(root!.element)
+            return
+        }
+        
+        if root!.left != nil {
+            heap.append(root!.left!)
+        } else {
+            heap.append(root!.right!)
+        }
+        
+        while heap.count > 0 {
+            let node = heap.last!
+            queue.enqueue(node)
+            
+            if node.left != nil {
+                heap.append(node.left!)
+            } else if node.right != nil {
+                heap.append(node.right!)
+            } else {
+                heap.removeLast()
+                heap.removeLast()
+            }
+        }
+        
+      
     }
     
     func inorderTraversalUsingBlock(_ closure: @escaping (Element) -> Void) {
