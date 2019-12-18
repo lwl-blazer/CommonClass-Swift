@@ -130,37 +130,37 @@ extension BinarySearchTree{
         self .preorderTraversal(root)
         callBackClosure = nil*/
         
-        var queue : Queue<TreeNode<Element>> = Queue.init()
+        //var queue :Queue<TreeNode<Element>> = Queue.init()
         var heap :[TreeNode<Element>] = Array.init()
-        queue.enqueue(root!)
+        var isPop :Bool = false
+        
         heap.append(root!)
-        
-        guard (root!.left != nil && root!.right != nil) else {
-            closure(root!.element)
-            return
-        }
-        
-        if root!.left != nil {
-            heap.append(root!.left!)
-        } else {
-            heap.append(root!.right!)
-        }
-        
         while heap.count > 0 {
             let node = heap.last!
-            queue.enqueue(node)
-            
-            if node.left != nil {
-                heap.append(node.left!)
-            } else if node.right != nil {
-                heap.append(node.right!)
-            } else {
-                heap.removeLast()
-                heap.removeLast()
+            if isPop { //是弹出状态
+                closure(node.right!.element)
+                if node.right != nil {
+                    isPop = false
+                    //queue.enqueue(node.right!)
+                    
+                    heap.append(node.right!)
+                } else {
+                    
+                }
+            } else { //不是弹出状态
+                //queue.enqueue(node)
+                closure(node.element)
+                if node.left != nil {
+                    heap.append(node.left!)
+                } else if node.right != nil {
+                    isPop = true;
+                    heap.removeLast()
+                } else {
+                    isPop = true;
+                    heap.removeLast()
+                }
             }
         }
-        
-      
     }
     
     func inorderTraversalUsingBlock(_ closure: @escaping (Element) -> Void) {

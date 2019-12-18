@@ -19,7 +19,8 @@ class ViewController: UIViewController {
         for i in arr {
             tree.add(i)
         }
-        tree.inorderTraversalUsingBlock { (e) in
+        
+        tree.preorderTraversalUsingBlock { (e) in
             print(e)
         }
     }
