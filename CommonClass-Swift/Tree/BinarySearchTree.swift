@@ -125,39 +125,52 @@ extension BinarySearchTree{
         guard (root != nil) else {
             return
         }
-        /* 迭代
+        /* 递归
         callBackClosure = closure
         self .preorderTraversal(root)
         callBackClosure = nil*/
         
-        //var queue :Queue<TreeNode<Element>> = Queue.init()
-        var heap :[TreeNode<Element>] = Array.init()
-        var isPop :Bool = false
-        
+        /**非递归*/
+        /*var heap :[TreeNode<Element>] = Array.init()
         heap.append(root!)
+        
+        var node : TreeNode<Element>
         while heap.count > 0 {
-            let node = heap.last!
-            if isPop { //是弹出状态
-                closure(node.right!.element)
-                if node.right != nil {
-                    isPop = false
-                    //queue.enqueue(node.right!)
-                    
-                    heap.append(node.right!)
-                } else {
-                    
+            node = heap.removeLast()
+            closure(node.element)
+            if node.right != nil {
+                heap.append(node.right!)
+            }
+            
+            if node.left != nil {
+                heap.append(node.left!)
+            }
+        }*/
+        
+        /**莫里斯 遍历
+         * 就是利用线索二叉树
+         * 线索二叉树，就是利用大量的空闲指针，利用这些空指针域来存放指向该节点的直接前驱或直接后继的指针，则可以进行某些更方便的运算。这些被重新利用起来的空指针就被称为线索，加上这些线索的二叉树就是线索二叉树
+         *
+         */
+        var node = root
+        while node != nil {
+            if node!.left == nil {
+                closure(node!.element)
+                node = node!.right
+            } else {
+                var predecessor = node!.left!
+                //找node的前驱节点  node.left != nil predecessor = node.left.right.right...
+                while predecessor.right != nil && predecessor.right! !== node! { //predecessor.right! != node! 处理伪边
+                    predecessor = predecessor.right!
                 }
-            } else { //不是弹出状态
-                //queue.enqueue(node)
-                closure(node.element)
-                if node.left != nil {
-                    heap.append(node.left!)
-                } else if node.right != nil {
-                    isPop = true;
-                    heap.removeLast()
+                
+                if predecessor.right == nil { //伪边
+                    closure(node!.element)
+                    predecessor.right = node!
+                    node = node!.left
                 } else {
-                    isPop = true;
-                    heap.removeLast()
+                    predecessor.right = nil
+                    node = node!.right
                 }
             }
         }

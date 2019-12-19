@@ -15,7 +15,7 @@ class ViewController: UIViewController {
 
         view.backgroundColor = UIColor.red
         let tree:BinarySearchTree<Int> = BinarySearchTree.init()
-        let arr = [7, 4, 9, 2, 5, 8, 3, 11]
+        let arr = [7, 4, 9, 2, 5, 8]
         for i in arr {
             tree.add(i)
         }
