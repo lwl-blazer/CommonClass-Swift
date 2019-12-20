@@ -180,9 +180,33 @@ extension BinarySearchTree{
         guard (root != nil) else {
             return
         }
+        /* 递归
         callBackClosure = closure
         self.inorderTraversal(root)
         callBackClosure = nil
+        */
+        
+        //利用莫里斯遍历-线索二叉树
+        var node = root;
+        var predecessor : TreeNode<Element>
+        while node != nil {
+            if node!.left == nil {
+                closure(node!.element);
+                node = node!.right
+            } else {
+                predecessor = node!.left!
+                while predecessor.right != nil {
+                    predecessor = predecessor.right!
+                }
+                
+                predecessor.right = node
+                
+                //破坏左边 只保留右边
+                let temp = node!
+                node = node!.left
+                temp.left = nil
+            }
+        }
     }
     
     func postorderTraversalUsingBlock(_ closure: @escaping (Element) -> Void) {
