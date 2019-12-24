@@ -23,6 +23,17 @@ class ViewController: UIViewController {
         tree.postorderTraversalUsingBlock{ (e) in
             print(e)
         }
+        
+        let list:LinkedList<Int> = LinkedList.init()
+        
+        for i in 0..<10 {
+            list.add(i+10)
+        }
+        print(list)
+        
+        print(list.remove(0))
+        print(list.get(3))
+        print(list)
     }
 }
 

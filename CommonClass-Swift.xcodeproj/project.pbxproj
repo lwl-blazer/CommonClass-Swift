@@ -18,6 +18,8 @@
 		25095C5F23A0962100E772C7 /* Tree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25095C5E23A0962100E772C7 /* Tree.swift */; };
 		25095C6123A0B93600E772C7 /* BinarySearchTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25095C6023A0B93600E772C7 /* BinarySearchTree.swift */; };
 		25095C6323A0DBFC00E772C7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25095C6223A0DBFB00E772C7 /* SceneDelegate.swift */; };
+		25095D2823B1DF3000E772C7 /* LinkedListNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25095D2723B1DF2F00E772C7 /* LinkedListNode.swift */; };
+		25095D2A23B1EA3E00E772C7 /* LinkedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25095D2923B1EA3E00E772C7 /* LinkedList.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +57,8 @@
 		25095C5E23A0962100E772C7 /* Tree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tree.swift; sourceTree = "<group>"; };
 		25095C6023A0B93600E772C7 /* BinarySearchTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinarySearchTree.swift; sourceTree = "<group>"; };
 		25095C6223A0DBFB00E772C7 /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		25095D2723B1DF2F00E772C7 /* LinkedListNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkedListNode.swift; sourceTree = "<group>"; };
+		25095D2923B1EA3E00E772C7 /* LinkedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkedList.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +112,7 @@
 				25095C6223A0DBFB00E772C7 /* SceneDelegate.swift */,
 				25095C5D23A095AC00E772C7 /* Tree */,
 				25095C5A23A0915900E772C7 /* Queue */,
+				25095D2623B1DE7700E772C7 /* LinkList */,
 				25095C2A23A0903300E772C7 /* AppDelegate.swift */,
 				25095C2E23A0903300E772C7 /* ViewController.swift */,
 				25095C3023A0903300E772C7 /* Main.storyboard */,
@@ -151,6 +156,15 @@
 				25095C6023A0B93600E772C7 /* BinarySearchTree.swift */,
 			);
 			path = Tree;
+			sourceTree = "<group>";
+		};
+		25095D2623B1DE7700E772C7 /* LinkList */ = {
+			isa = PBXGroup;
+			children = (
+				25095D2723B1DF2F00E772C7 /* LinkedListNode.swift */,
+				25095D2923B1EA3E00E772C7 /* LinkedList.swift */,
+			);
+			path = LinkList;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -287,9 +301,11 @@
 				25095C5F23A0962100E772C7 /* Tree.swift in Sources */,
 				25095C2F23A0903300E772C7 /* ViewController.swift in Sources */,
 				25095C6123A0B93600E772C7 /* BinarySearchTree.swift in Sources */,
+				25095D2A23B1EA3E00E772C7 /* LinkedList.swift in Sources */,
 				25095C2B23A0903300E772C7 /* AppDelegate.swift in Sources */,
 				25095C5C23A0917900E772C7 /* Queue.swift in Sources */,
 				25095C6323A0DBFC00E772C7 /* SceneDelegate.swift in Sources */,
+				25095D2823B1DF3000E772C7 /* LinkedListNode.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
