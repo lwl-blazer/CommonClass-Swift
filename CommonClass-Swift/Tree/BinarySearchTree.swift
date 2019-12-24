@@ -16,7 +16,7 @@ class BinarySearchTree<Element:Comparable>:TreeObjectDelegate{
     typealias T = Element
     var root: TreeNode<Element>?
     var size: Int
-    var callBackClosure:((_ element : Element) -> Void)?;
+    var callBackClosure:((_ element : Element) -> Void)?
     
     init() {
         size = 0
@@ -213,10 +213,37 @@ extension BinarySearchTree{
         guard (root != nil) else {
             return
         }
+        /*
         callBackClosure = closure
         self.postorderTraversal(root)
-        callBackClosure = nil
+        callBackClosure = nil*/
+        
+        /** 利用栈的特性， 后进先出的原则 */
+        var queue :Array<TreeNode<Element>> = Array.init()
+        var array :Array<TreeNode<Element>> = Array.init()
+        var node : TreeNode<Element>
+        queue.append(root!)
+        while queue.count != 0 {
+            node = queue.removeLast()
+            array.insert(node, at: 0)
+            
+            if node.left != nil {
+                queue.append(node.left!)
+            }
+            
+            if node.right != nil {
+                queue.append(node.right!)
+            }
+        }
+        
+        for node in array {
+            closure(node.element)
+        }
     }
+    
+    
+    
+    
     
     func levelOrderTraversalUsingBlock(_ closure:(_ element:T)->Void){
         guard (root != nil) else {
@@ -371,7 +398,6 @@ extension BinarySearchTree {
             if node!.right != nil {
                 queue.enqueue(node!.right!)
             }
-            
         }
     }
 }

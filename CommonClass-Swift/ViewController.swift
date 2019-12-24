@@ -20,7 +20,7 @@ class ViewController: UIViewController {
             tree.add(i)
         }
         
-        tree.inorderTraversalUsingBlock{ (e) in
+        tree.postorderTraversalUsingBlock{ (e) in
             print(e)
         }
     }
