@@ -8,6 +8,7 @@
 
 import Foundation
 
+//双向链表
 final class LinkedList<T:Comparable>: AbstractList<T>, LinkListInterface {
     override func add(_ element: T) {
         add(size, element)

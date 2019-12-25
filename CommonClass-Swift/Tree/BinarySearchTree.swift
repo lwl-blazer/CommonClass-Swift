@@ -116,8 +116,6 @@ class BinarySearchTree<Element:Comparable>:TreeObjectDelegate{
         //self.invertTreeRecursion(root)
         self.invertTreeCicle(root)
     }
-    
-    
 }
 
 extension BinarySearchTree{
@@ -240,10 +238,6 @@ extension BinarySearchTree{
             closure(node.element)
         }
     }
-    
-    
-    
-    
     
     func levelOrderTraversalUsingBlock(_ closure:(_ element:T)->Void){
         guard (root != nil) else {
@@ -399,5 +393,56 @@ extension BinarySearchTree {
                 queue.enqueue(node!.right!)
             }
         }
+    }
+}
+
+extension BinarySearchTree{
+    /**找前驱节点:中序遍历时的前一个节点*/
+    private func predecessor(node:TreeNode<Element>) ->TreeNode<Element>?{
+        
+        if node.left != nil { //node.left.right.right
+            var tmp = node.left
+            var predecessorNode = tmp
+            while tmp != nil {
+                predecessorNode = tmp!
+                tmp = tmp!.right
+            }
+            return predecessorNode
+        } else if node.parent != nil {
+            var tmp = node.parent
+            var p = node
+            while tmp != nil {
+                if tmp!.right === p {
+                    return tmp!;
+                }
+                p = tmp!
+                tmp = tmp!.parent
+            }
+        }
+        return nil
+    }
+    
+    /**找后继节点:中序遍历时的后一个节点*/
+    private func successor(node:TreeNode<Element>) ->TreeNode<Element>?{
+        if node.right != nil {
+            var tmp = node.right
+            var successorNode = tmp
+            while tmp != nil {
+                successorNode = tmp!
+                tmp = tmp!.left
+            }
+            return successorNode!
+        } else if node.parent != nil {
+            var tmp = node.parent
+            var p = node
+            while tmp != nil {
+                if tmp!.left === p {
+                    return tmp!;
+                }
+                p = tmp!
+                tmp = tmp!.parent
+            }
+        }
+        return nil
     }
 }
