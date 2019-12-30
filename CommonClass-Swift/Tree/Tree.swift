@@ -8,7 +8,8 @@
 
 import Foundation
 //节点
-class TreeNode<T:Comparable>{
+class TreeNode<T:Comparable>:Equatable{
+
     var element : T
     var left : TreeNode?
     var right : TreeNode?
@@ -17,6 +18,30 @@ class TreeNode<T:Comparable>{
     init(_ element : T, _ parent: TreeNode?) {
         self.element = element
         self.parent = parent
+    }
+    
+    /**
+     * 是否为叶子节点
+     */
+    public func isLeafNode() ->Bool{
+        if left == nil && right == nil {
+            return true
+        }
+        return false
+    }
+    
+    /**
+     *是否度为2
+     */
+    public func hasTwoChildren() ->Bool{
+        if left != nil && right != nil {
+            return true
+        }
+        return false
+    }
+
+    static func == (lhs: TreeNode<T>, rhs: TreeNode<T>) -> Bool {
+        return lhs.element == rhs.element
     }
 }
 
@@ -42,6 +67,10 @@ class BinaryTree<T:Comparable> {
     
     public func treeHeight() ->Int{
         return 0;
+    }
+    
+    public func remove(element :T) ->Void{
+        
     }
     
     /**

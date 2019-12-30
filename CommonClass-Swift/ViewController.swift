@@ -24,6 +24,11 @@ class ViewController: UIViewController {
             print(e)
         }
         
+        tree.remove(element: 9)
+        print(tree)
+        
+        
+        
         let list:LinkedList<Int> = LinkedList.init()
         
         for i in 0..<10 {

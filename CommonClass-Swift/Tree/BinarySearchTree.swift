@@ -284,6 +284,15 @@ final class BinarySearchTree<Element:Comparable>:BinaryTree<Element>{
         return nil
     }
     
+    override func remove(element :Element) ->Void{
+        let node = self.nodeWith(element:element)
+        guard node != nil else{
+            return
+        }
+        size-=1
+        removeNode(node!);
+    }
+    
     override func clear(){
         
     }
@@ -379,6 +388,56 @@ extension BinarySearchTree {
             }
         }
         return height
+    }
+    
+    private func removeNode(_ node:TreeNode<Element>) ->Void{
+        
+        var deleteNode = node
+        if node.hasTwoChildren(){ //度为2
+            let s = self.successor(node: node)
+            if s != nil {
+                node.element = s!.element
+                deleteNode = s!
+            }
+        }
+        
+        //删除Node(此时Node的度不为0就为1)
+        let replaceNode = deleteNode.left != nil ? deleteNode.left : deleteNode.right
+        if replaceNode != nil { //度为1
+            replaceNode!.parent = deleteNode.parent;
+            if deleteNode.parent == nil {
+                deleteNode = replaceNode!;
+            } else if deleteNode.parent!.left == replaceNode {
+                deleteNode.parent?.left = replaceNode
+            } else if deleteNode.parent!.right == replaceNode {
+                deleteNode.parent?.right = replaceNode
+            }
+        } else { //度为0
+            if deleteNode.parent == nil { //root
+                root = nil
+            } else if deleteNode.parent!.left === deleteNode {
+                deleteNode.parent!.left = nil
+            } else {
+                deleteNode.parent!.right = nil
+            }
+        }
+    }
+    
+    //根据元素获取所在的Node
+    private func nodeWith(element: Element) ->TreeNode<Element>?{
+        var node = root
+        while node != nil {
+            if node!.element == element {
+                return node
+            }
+            
+            if node!.element < element {
+                node = node!.right
+            } else {
+                node = node!.left
+            }
+        }
+        return nil
     }
 }
 
