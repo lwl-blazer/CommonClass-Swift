@@ -11,26 +11,10 @@ import UIKit
 /**
  * 二叉搜索树
  */
-class BinarySearchTree<Element:Comparable>:TreeObjectDelegate{
-    
-    typealias T = Element
-    var root: TreeNode<Element>?
-    var size: Int
+final class BinarySearchTree<Element:Comparable>:BinaryTree<Element>{
     var callBackClosure:((_ element : Element) -> Void)?
-    
-    init() {
-        size = 0
-    }
-    
-    public func isEmpty()->Bool{
-        return size == 0
-    }
-    
-    public func clear(){
-        
-    }
-    
-    public func add(_ element:Element){
+
+    public override func add(_ element:Element){
         if root == nil {
             root = TreeNode.init(element, nil)
             size+=1
@@ -66,7 +50,7 @@ class BinarySearchTree<Element:Comparable>:TreeObjectDelegate{
     }
     
     /**树的高度*/
-    public func treeHeight() ->Int{
+    public override func treeHeight() ->Int{
         //return self.treeHeightRecursion(root)
         return self.treeHeightCicre()
     }
@@ -107,19 +91,7 @@ class BinarySearchTree<Element:Comparable>:TreeObjectDelegate{
         return true
     }
     
-    
-    /** https://leetcode-cn.com/problems/invert-binary-tree/submissions/
-     * leetcode 226. 翻转二叉树
-     */
-    public func invertTree(){
-        //递归
-        //self.invertTreeRecursion(root)
-        self.invertTreeCicle(root)
-    }
-}
-
-extension BinarySearchTree{
-    func preorderTraversalUsingBlock(_ closure: @escaping (Element) -> Void) {
+    override func preorderTraversalUsingBlock(_ closure: @escaping (Element) -> Void) {
         guard (root != nil) else {
             return
         }
@@ -174,7 +146,7 @@ extension BinarySearchTree{
         }
     }
     
-    func inorderTraversalUsingBlock(_ closure: @escaping (Element) -> Void) {
+    override func inorderTraversalUsingBlock(_ closure: @escaping (Element) -> Void) {
         guard (root != nil) else {
             return
         }
@@ -207,7 +179,7 @@ extension BinarySearchTree{
         }
     }
     
-    func postorderTraversalUsingBlock(_ closure: @escaping (Element) -> Void) {
+    override func postorderTraversalUsingBlock(_ closure: @escaping (Element) -> Void) {
         guard (root != nil) else {
             return
         }
@@ -239,11 +211,11 @@ extension BinarySearchTree{
         }
     }
     
-    func levelOrderTraversalUsingBlock(_ closure:(_ element:T)->Void){
+    override func levelOrderTraversalUsingBlock(_ closure:(_ element:Element)->Void){
         guard (root != nil) else {
             return
         }
-        var queue: Queue<TreeNode<T>> = Queue.init()
+        var queue: Queue<TreeNode<Element>> = Queue.init()
         queue.enqueue(root!)
         while !queue.isEmpty {
             let node = queue.dequene()
@@ -263,6 +235,62 @@ extension BinarySearchTree{
         }
     }
     
+    /**找前驱节点:中序遍历时的前一个节点*/
+    override func predecessor(node:TreeNode<Element>) ->TreeNode<Element>?{
+        
+        if node.left != nil { //node.left.right.right
+            var tmp = node.left
+            var predecessorNode = tmp
+            while tmp != nil {
+                predecessorNode = tmp!
+                tmp = tmp!.right
+            }
+            return predecessorNode
+        } else if node.parent != nil {
+            var tmp = node.parent
+            var p = node
+            while tmp != nil {
+                if tmp!.right === p {
+                    return tmp!;
+                }
+                p = tmp!
+                tmp = tmp!.parent
+            }
+        }
+        return nil
+    }
+       
+    /**找后继节点:中序遍历时的后一个节点*/
+    override func successor(node:TreeNode<Element>) ->TreeNode<Element>?{
+        if node.right != nil {
+            var tmp = node.right
+            var successorNode = tmp
+            while tmp != nil {
+                successorNode = tmp!
+                tmp = tmp!.left
+            }
+            return successorNode!
+        } else if node.parent != nil {
+            var tmp = node.parent
+            var p = node
+            while tmp != nil {
+                if tmp!.left === p {
+                    return tmp!;
+                }
+                p = tmp!
+                tmp = tmp!.parent
+            }
+        }
+        return nil
+    }
+    
+    override func clear(){
+        
+    }
+    
+}
+
+extension BinarySearchTree {
     private func preorderTraversal(_ node:TreeNode<Element>?){
         guard (node != nil) else {
             return
@@ -298,9 +326,7 @@ extension BinarySearchTree{
             callBackClosure!(node!.element)
         }
     }
-}
-
-extension BinarySearchTree {
+    
     private func compareTo(_ e1 :Element, _ e2 : Element) -> ComparisonResult {
         if e1 < e2 {
             return .orderedAscending
@@ -354,6 +380,18 @@ extension BinarySearchTree {
         }
         return height
     }
+}
+
+//Leetcode
+extension BinarySearchTree{
+    /** https://leetcode-cn.com/problems/invert-binary-tree/submissions/
+     * leetcode 226. 翻转二叉树
+     */
+    public func invertTree(){
+        //递归
+        //self.invertTreeRecursion(root)
+        self.invertTreeCicle(root)
+    }
     
     private func invertTreeRecursion(_ node:TreeNode<Element>?){
         guard node != nil else {
@@ -393,56 +431,5 @@ extension BinarySearchTree {
                 queue.enqueue(node!.right!)
             }
         }
-    }
-}
-
-extension BinarySearchTree{
-    /**找前驱节点:中序遍历时的前一个节点*/
-    private func predecessor(node:TreeNode<Element>) ->TreeNode<Element>?{
-        
-        if node.left != nil { //node.left.right.right
-            var tmp = node.left
-            var predecessorNode = tmp
-            while tmp != nil {
-                predecessorNode = tmp!
-                tmp = tmp!.right
-            }
-            return predecessorNode
-        } else if node.parent != nil {
-            var tmp = node.parent
-            var p = node
-            while tmp != nil {
-                if tmp!.right === p {
-                    return tmp!;
-                }
-                p = tmp!
-                tmp = tmp!.parent
-            }
-        }
-        return nil
-    }
-    
-    /**找后继节点:中序遍历时的后一个节点*/
-    private func successor(node:TreeNode<Element>) ->TreeNode<Element>?{
-        if node.right != nil {
-            var tmp = node.right
-            var successorNode = tmp
-            while tmp != nil {
-                successorNode = tmp!
-                tmp = tmp!.left
-            }
-            return successorNode!
-        } else if node.parent != nil {
-            var tmp = node.parent
-            var p = node
-            while tmp != nil {
-                if tmp!.left === p {
-                    return tmp!;
-                }
-                p = tmp!
-                tmp = tmp!.parent
-            }
-        }
-        return nil
     }
 }
