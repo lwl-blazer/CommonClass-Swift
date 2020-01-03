@@ -14,41 +14,6 @@ import UIKit
 final class BinarySearchTree<Element:Comparable>:BinaryTree<Element>{
     var callBackClosure:((_ element : Element) -> Void)?
 
-    public override func add(_ element:Element){
-        if root == nil {
-            root = TreeNode.init(element, nil)
-            size+=1
-            return
-        }
-        
-        var node = root;
-        var parent = root!;
-        var result = ComparisonResult.orderedAscending
-        while node != nil {
-            parent = node!
-            result = self.compareTo(element, node!.element)
-            switch result {
-            case .orderedAscending:
-                node = node!.left
-                break
-            case .orderedDescending:
-                node = node!.right
-                break
-            default:
-                node!.element = element;
-                return
-            }
-        }
-        
-        let newNode = TreeNode.init(element, parent)
-        if result == .orderedDescending {
-            parent.right = newNode
-        } else {
-            parent.left = newNode
-        }
-        size += 1
-    }
-    
     /**树的高度*/
     public override func treeHeight() ->Int{
         //return self.treeHeightRecursion(root)
@@ -150,11 +115,12 @@ final class BinarySearchTree<Element:Comparable>:BinaryTree<Element>{
         guard (root != nil) else {
             return
         }
-        /* 递归
+        /* 递归 */
+        /*
         callBackClosure = closure
         self.inorderTraversal(root)
-        callBackClosure = nil
-        */
+        callBackClosure = nil*/
+        
         
         //利用莫里斯遍历-线索二叉树
         var node = root;
@@ -284,7 +250,50 @@ final class BinarySearchTree<Element:Comparable>:BinaryTree<Element>{
         return nil
     }
     
-    override func remove(element :Element) ->Void{
+    override func clear(){
+        root = nil
+        size = 0
+    }
+    
+}
+
+extension BinarySearchTree {
+    public func add(_ element:Element){
+        if root == nil {
+            root = TreeNode.init(element, nil)
+            size+=1
+            return
+        }
+        
+        var node = root;
+        var parent = root!;
+        var result = ComparisonResult.orderedAscending
+        while node != nil {
+            parent = node!
+            result = self.compareTo(element, node!.element)
+            switch result {
+            case .orderedAscending:
+                node = node!.left
+                break
+            case .orderedDescending:
+                node = node!.right
+                break
+            default:
+                node!.element = element;
+                return
+            }
+        }
+        
+        let newNode = TreeNode.init(element, parent)
+        if result == .orderedDescending {
+            parent.right = newNode
+        } else {
+            parent.left = newNode
+        }
+        size += 1
+    }
+    
+    public func remove(element :Element) ->Void{
         let node = self.nodeWith(element:element)
         guard node != nil else{
             return
@@ -292,12 +301,8 @@ final class BinarySearchTree<Element:Comparable>:BinaryTree<Element>{
         size-=1
         removeNode(node!);
     }
-    
-    override func clear(){
-        
-    }
-    
 }
+
 
 extension BinarySearchTree {
     private func preorderTraversal(_ node:TreeNode<Element>?){
@@ -395,10 +400,11 @@ extension BinarySearchTree {
         var deleteNode = node
         if node.hasTwoChildren(){ //度为2
             let s = self.successor(node: node)
-            if s != nil {
-                node.element = s!.element
-                deleteNode = s!
+            guard s != nil else {
+                return
             }
+            node.element = s!.element
+            deleteNode = s!;
         }
         
         //删除Node(此时Node的度不为0就为1)
@@ -406,16 +412,16 @@ extension BinarySearchTree {
         if replaceNode != nil { //度为1
             replaceNode!.parent = deleteNode.parent;
             if deleteNode.parent == nil {
-                deleteNode = replaceNode!;
-            } else if deleteNode.parent!.left == replaceNode {
-                deleteNode.parent?.left = replaceNode
-            } else if deleteNode.parent!.right == replaceNode {
-                deleteNode.parent?.right = replaceNode
+                root = replaceNode!;
+            } else if deleteNode.parent!.left == deleteNode {
+                deleteNode.parent!.left = replaceNode
+            } else {
+                deleteNode.parent!.right = replaceNode
             }
         } else { //度为0
             if deleteNode.parent == nil { //root
                 root = nil
-            } else if deleteNode.parent!.left === deleteNode {
+            } else if deleteNode.parent!.left == deleteNode {
                 deleteNode.parent!.left = nil
             } else {
                 deleteNode.parent!.right = nil

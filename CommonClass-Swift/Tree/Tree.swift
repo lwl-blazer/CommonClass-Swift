@@ -40,6 +40,8 @@ class TreeNode<T:Comparable>:Equatable{
         return false
     }
 
+    
+    
     static func == (lhs: TreeNode<T>, rhs: TreeNode<T>) -> Bool {
         return lhs.element == rhs.element
     }
@@ -62,15 +64,8 @@ class BinaryTree<T:Comparable> {
         
     }
     
-    public func add(_ element:T){
-    }
-    
     public func treeHeight() ->Int{
         return 0;
-    }
-    
-    public func remove(element :T) ->Void{
-        
     }
     
     /**

@@ -20,14 +20,15 @@ class ViewController: UIViewController {
             tree.add(i)
         }
         
-        tree.postorderTraversalUsingBlock{ (e) in
+        tree.inorderTraversalUsingBlock { (e) in
             print(e)
         }
-        
-        tree.remove(element: 9)
-        print(tree)
-        
-        
+        print("---------------")
+        tree.remove(element: 7)
+
+        tree.inorderTraversalUsingBlock { (e) in
+            print(e)
+        }
         
         let list:LinkedList<Int> = LinkedList.init()
         
