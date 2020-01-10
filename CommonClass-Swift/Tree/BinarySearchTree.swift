@@ -116,6 +116,7 @@ final class BinarySearchTree<Element:Comparable>:BinaryTree<Element>{
             return
         }
         /* 递归 */
+        
         /*
         callBackClosure = closure
         self.inorderTraversal(root)
@@ -131,16 +132,17 @@ final class BinarySearchTree<Element:Comparable>:BinaryTree<Element>{
                 node = node!.right
             } else {
                 predecessor = node!.left!
-                while predecessor.right != nil {
+                while predecessor.right != nil && predecessor != node {
                     predecessor = predecessor.right!
                 }
                 
-                predecessor.right = node
-                
-                //破坏左边 只保留右边
-                let temp = node!
-                node = node!.left
-                temp.left = nil
+                if (predecessor == node) {
+                    closure(node!.element);
+                    node = node!.right;
+                } else {
+                    predecessor.right = nil
+                    node = node!.left
+                }
             }
         }
     }
@@ -496,5 +498,82 @@ extension BinarySearchTree{
                 queue.enqueue(node!.right!)
             }
         }
+    }
+    
+    
+    /**
+     * 删除二叉搜索树中的节点
+     * https://leetcode-cn.com/problems/delete-node-in-a-bst/
+     */
+    private func leetCode_deleteNode(_ root: TreeNode<Element>?, _ key:Element) ->TreeNode<Element>?{
+        guard root != nil else {
+            return nil
+        }
+        
+        //1.找到需要删除的节点
+        let node = nodeWith(element: key);
+        guard node != nil else {
+            return root;
+        }
+        
+        //2.进行删除  有度为0的叶子节点  度1、2的叶点
+        var deleteNode = node!;
+        if deleteNode.left != nil && deleteNode.right != nil { //度为2
+            let s = successor(node: deleteNode)!
+            deleteNode.element = s.element
+            deleteNode = s;
+        }
+        
+        let replaceNode = deleteNode.left != nil ? deleteNode.left! : deleteNode.right
+        if replaceNode != nil { //度为1
+            replaceNode!.parent = deleteNode.parent;
+            
+            if deleteNode.parent == nil {
+                replaceNode!.parent = nil;
+                return replaceNode;
+            } else if deleteNode == deleteNode.parent!.left{
+                deleteNode.parent!.left = replaceNode;
+            } else {
+                deleteNode.parent!.right = replaceNode;
+            }
+        } else { //度为0
+            if deleteNode.parent == nil {
+                return nil
+            } else if deleteNode == deleteNode.parent!.left{
+                deleteNode.parent!.left = nil;
+            } else {
+                deleteNode.parent!.right = nil;
+            }
+        }
+        
+        return root
+    }
+    
+    /**
+     * 验证是否符合二叉搜索树
+     * https://leetcode-cn.com/problems/validate-binary-search-tree/
+     */
+    private func isValidBST(_ root:TreeNode<Element>?) -> Bool {
+        guard root != nil else {
+            return false
+        }
+        return validLeafNode(root!, root!.left, root!.right)
+    }
+    
+    func validLeafNode(_ root: TreeNode<Element>?, _ left:TreeNode<Element>?, _ right:TreeNode<Element>?) -> Bool {
+        
+        if root == nil {
+            return true
+        } else if root!.left == nil && root!.right == nil {
+            return true
+        }
+        
+        let val = root!.left != nil ? root!.left!.element : root!.right!.element
+        if root!.left != nil && val < root!.element {
+            return true
+        } else {
+            return false
+        }
+        
     }
 }

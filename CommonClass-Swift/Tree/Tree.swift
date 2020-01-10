@@ -39,7 +39,6 @@ class TreeNode<T:Comparable>:Equatable{
         }
         return false
     }
-
     
     
     static func == (lhs: TreeNode<T>, rhs: TreeNode<T>) -> Bool {

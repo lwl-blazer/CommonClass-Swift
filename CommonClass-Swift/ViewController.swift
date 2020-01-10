@@ -14,22 +14,22 @@ class ViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = UIColor.red
+        
         let tree:BinarySearchTree<Int> = BinarySearchTree.init()
         let arr = [7, 4, 9, 2, 5, 8]
         for i in arr {
             tree.add(i)
         }
         
-        tree.inorderTraversalUsingBlock { (e) in
+        tree.preorderTraversalUsingBlock { (e) in
             print(e)
         }
         print("---------------")
         tree.remove(element: 7)
-
-        tree.inorderTraversalUsingBlock { (e) in
+        tree.preorderTraversalUsingBlock { (e) in
             print(e)
         }
-        
+        /*
         let list:LinkedList<Int> = LinkedList.init()
         
         for i in 0..<10 {
@@ -39,7 +39,8 @@ class ViewController: UIViewController {
         
         print(list.remove(0))
         print(list.get(3))
-        print(list)
+        print(list)*/
+    
     }
 }
 
