@@ -41,7 +41,20 @@ class ViewController: UIViewController {
         print(list.get(3))
         print(list)*/
     
+        var p = Position(x: 10, y: 10)
+        var s:Ship = Ship(position: p, firingRange: 30, unsafeRange: 20)
+        let b = s.circle(radius: 10)
+    
+        
+        let shifted = s.shift({ (point) -> Bool in
+            
+        }, by: p);
+        let c = shifted
+
+        
     }
+    
+    
 }
 
 

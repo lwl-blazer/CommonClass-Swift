@@ -557,23 +557,32 @@ extension BinarySearchTree{
         guard root != nil else {
             return false
         }
-        return validLeafNode(root!, root!.left, root!.right)
+        return validLeafNode(root!, nil, nil)
     }
     
-    func validLeafNode(_ root: TreeNode<Element>?, _ left:TreeNode<Element>?, _ right:TreeNode<Element>?) -> Bool {
+    func validLeafNode(_ node: TreeNode<Element>?, _ low:Element?, _ upper:Element?) -> Bool {
         
-        if root == nil {
-            return true
-        } else if root!.left == nil && root!.right == nil {
+        if node == nil {
             return true
         }
         
-        let val = root!.left != nil ? root!.left!.element : root!.right!.element
-        if root!.left != nil && val < root!.element {
-            return true
-        } else {
-            return false
+        let val = node!.element;
+        if low != nil && val <= low!{
+            return false;
         }
         
+        if upper != nil && val >= upper! {
+            return false;
+        }
+        
+        if !validLeafNode(node!.left, val, upper) {
+            return false;
+        }
+        
+        if !validLeafNode(node!.right, low, val) {
+            return false;
+        }
+        
+        return true;
     }
 }
